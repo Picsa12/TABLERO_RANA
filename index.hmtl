@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Juego de Rana Tradicional de Colombia</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      padding: 30px;
+      max-width: 1000px;
+      width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+      font-size: 2.5em;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .btn {
+      background: linear-gradient(45deg, #76b947, #5a9b3a);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 25px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 30px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal h2 {
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+      font-weight: bold;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #76b947;
+    }
+
+    .player-input {
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .btn-secondary {
+      background: linear-gradient(45deg, #6c757d, #5a6268);
+    }
+
+    /* Tabla de resultados */
+    .tabla-container {
+      display: none;
+      margin-top: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    th {
+      background: linear-gradient(45deg, #76b947, #5a9b3a);
+      color: white;
+      padding: 15px;
+      font-weight: bold;
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+      text-align: center;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+
+    tr:hover {
+      background-color: #e8f5e8;
+    }
+
+    .turno-info {
+      background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .score-input {
+      text-align: center;
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      border: 2px solid #ddd;
+      transition: all 0.3s ease;
+      margin: 20px 0;
+    }
+
+    .score-input:hover {
+      border-color: #76b947;
+      transform: translateY(-2px);
+    }
+
+    .score-input label {
+      display: block;
+      margin-bottom: 15px;
+      color: #555;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .score-input input {
+      width: 120px;
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    /* Nuevos estilos para la sección de ranas */
+    .ranas-section {
+      background: #e8f5e8;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+      border: 2px solid #76b947;
+    }
+
+    .ranas-title {
+      text-align: center;
+      color: #333;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .rana-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border: 2px solid #ddd;
+      transition: all 0.3s ease;
+    }
+
+    .rana-item:hover {
+      border-color: #76b947;
+      transform: translateY(-2px);
+    }
+
+    .rana-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .rana-emoji {
+      font-size: 24px;
+    }
+
+    .rana-text {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .rana-puntos {
+      color: #76b947;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .rana-controls {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .rana-input {
+      width: 60px;
+      padding: 8px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .rana-input:focus {
+      outline: none;
+      border-color: #76b947;
+    }
+
+    .total-calculado {
+      background: linear-gradient(45deg, #17a2b8, #138496);
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    .winner-alert {
+      background: linear-gradient(45deg, #28a745, #20c997);
+      color: white;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      margin: 20px 0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .puntaje-info {
+      background: linear-gradient(45deg, #17a2b8, #138496);
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .resumen-final {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .resumen-final table {
+      font-size: 14px;
+    }
+
+    .resumen-final th {
+      font-size: 12px;
+      padding: 10px 5px;
+    }
+
+    .resumen-final td {
+      padding: 8px 5px;
+    }
+
+    .btn-close {
+      background: linear-gradient(45deg, #dc3545, #c82333);
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🐸 Juego de Rana Tradicional 🐸</h1>
+    
+    <div id="inicio">
+      <div style="text-align: center;">
+        <button class="btn" onclick="mostrarConfiguracion()">
+          🎮 Configurar Nuevo Juego
+        </button>
+      </div>
+    </div>
+
+    <div class="tabla-container" id="tablaContainer">
+      <h2 style="text-align: center; color: #333;">📊 Tabla de Puntajes</h2>
+      <div class="turno-info" id="turnoInfo"></div>
+      <table id="tabla">
+        <thead>
+          <tr>
+            <th>🏆 Jugador</th>
+            <th>📈 Puntaje Total</th>
+            <th>🐸 Rana Pequeña</th>
+            <th>🐸 Rana Mediana</th>
+            <th>🐸 Rana Grande</th>
+          </tr>
+        </thead>
+        <tbody id="cuerpoTabla"></tbody>
+      </table>
+      <div style="text-align: center; margin-top: 20px;">
+        <button class="btn" onclick="mostrarTurno()">
+          🎯 Registrar Tiro
+        </button>
+        <button class="btn btn-secondary" onclick="reiniciarJuego()">
+          🔄 Nuevo Juego
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Configuración -->
+  <div id="modalConfiguracion" class="modal">
+    <div class="modal-content">
+      <h2>⚙️ Configuración del Juego</h2>
+      <div class="form-group">
+        <label>Cantidad de jugadores:</label>
+        <input type="number" id="numJugadores" min="1" max="10" value="2">
+      </div>
+      <div class="form-group">
+        <label>Meta de puntaje:</label>
+        <input type="number" id="metaPuntaje" value="100">
+      </div>
+      <div class="form-group">
+        <label>Puntaje Rana Pequeña:</label>
+        <input type="number" id="ranaPequena" value="5">
+      </div>
+      <div class="form-group">
+        <label>Puntaje Rana Mediana:</label>
+        <input type="number" id="ranaMediana" value="10">
+      </div>
+      <div class="form-group">
+        <label>Puntaje Rana Grande:</label>
+        <input type="number" id="ranaGrande" value="20">
+      </div>
+      <div class="modal-buttons">
+        <button class="btn" onclick="configurarJugadores()">
+          ➡️ Configurar Jugadores
+        </button>
+        <button class="btn btn-secondary" onclick="cerrarModal('modalConfiguracion')">
+          ❌ Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Jugadores -->
+  <div id="modalJugadores" class="modal">
+    <div class="modal-content">
+      <h2>👥 Configurar Jugadores</h2>
+      <div id="jugadoresInputs"></div>
+      <div class="modal-buttons">
+        <button class="btn" onclick="iniciarJuego()">
+          🚀 Iniciar Juego
+        </button>
+        <button class="btn btn-secondary" onclick="volverConfiguracion()">
+          ⬅️ Volver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Turno MODIFICADO -->
+  <div id="modalTurno" class="modal">
+    <div class="modal-content">
+      <h2 id="tituloTurno"></h2>
+      <div class="puntaje-info" id="puntajeInfo"></div>
+      
+      <div class="score-input">
+        <label>🎯 Puntaje Total Obtenido</label>
+        <input type="number" id="puntajeTiro" min="0" value="0" placeholder="Ingresa el puntaje total" onchange="actualizarCalculoTotal()">
+      </div>
+
+      <!-- NUEVA SECCIÓN PARA SELECCIÓN MANUAL DE RANAS -->
+      <div class="ranas-section">
+        <div class="ranas-title">🐸 Seleccionar Ranas Obtenidas</div>
+        
+        <div class="rana-item">
+          <div class="rana-info">
+            <span class="rana-emoji">🐸</span>
+            <span class="rana-text">Rana Pequeña</span>
+            <span class="rana-puntos" id="puntosRanaPequeña">5 pts c/u</span>
+          </div>
+          <div class="rana-controls">
+            <label>Cantidad:</label>
+            <input type="number" id="cantidadRanaPequena" class="rana-input" min="0" value="0" onchange="actualizarCalculoTotal()">
+          </div>
+        </div>
+
+        <div class="rana-item">
+          <div class="rana-info">
+            <span class="rana-emoji">🐸</span>
+            <span class="rana-text">Rana Mediana</span>
+            <span class="rana-puntos" id="puntosRanaMediana">10 pts c/u</span>
+          </div>
+          <div class="rana-controls">
+            <label>Cantidad:</label>
+            <input type="number" id="cantidadRanaMediana" class="rana-input" min="0" value="0" onchange="actualizarCalculoTotal()">
+          </div>
+        </div>
+
+        <div class="rana-item">
+          <div class="rana-info">
+            <span class="rana-emoji">🐸</span>
+            <span class="rana-text">Rana Grande</span>
+            <span class="rana-puntos" id="puntosRanaGrande">20 pts c/u</span>
+          </div>
+          <div class="rana-controls">
+            <label>Cantidad:</label>
+            <input type="number" id="cantidadRanaGrande" class="rana-input" min="0" value="0" onchange="actualizarCalculoTotal()">
+          </div>
+        </div>
+
+        <div class="total-calculado" id="totalCalculado">
+          Total por ranas: 0 puntos
+        </div>
+      </div>
+
+      <div class="modal-buttons">
+        <button class="btn" onclick="registrarTiro()">
+          ✅ Registrar Tiro
+        </button>
+        <button class="btn btn-secondary" onclick="cerrarModal('modalTurno')">
+          ❌ Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Resumen Final -->
+  <div id="modalResumen" class="modal">
+    <div class="modal-content resumen-final">
+      <h2>🏆 Resumen Final de la Partida</h2>
+      <div id="ganadorFinal"></div>
+      <div id="resumenContenido"></div>
+      <div class="modal-buttons">
+        <button class="btn btn-close" onclick="cerrarModal('modalResumen')">
+          🔄 Cerrar y Nuevo Juego
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let jugadores = [];
+    let ronda = 1;
+    let turno = 0;
+    let meta = 0;
+    let puntos = { pequena: 0, mediana: 0, grande: 0 };
+    let juegoEnCurso = false;
+    let historialRondas = [];
+
+    function mostrarConfiguracion() {
+      document.getElementById('modalConfiguracion').style.display = 'block';
+    }
+
+    function configurarJugadores() {
+      const cantidad = parseInt(document.getElementById('numJugadores').value);
+      if (!cantidad || cantidad < 1) {
+        alert('Por favor ingresa un número válido de jugadores');
+        return;
+      }
+
+      meta = parseInt(document.getElementById('metaPuntaje').value);
+      puntos.pequena = parseInt(document.getElementById('ranaPequena').value);
+      puntos.mediana = parseInt(document.getElementById('ranaMediana').value);
+      puntos.grande = parseInt(document.getElementById('ranaGrande').value);
+
+      const container = document.getElementById('jugadoresInputs');
+      container.innerHTML = '';
+
+      for (let i = 0; i < cantidad; i++) {
+        const playerDiv = document.createElement('div');
+        playerDiv.className = 'player-input';
+        playerDiv.innerHTML = `
+          <label>Nombre del Jugador ${i + 1}:</label>
+          <input type="text" id="jugador${i}" placeholder="Ingresa el nombre..." required>
+        `;
+        container.appendChild(playerDiv);
+      }
+
+      cerrarModal('modalConfiguracion');
+      document.getElementById('modalJugadores').style.display = 'block';
+    }
+
+    function iniciarJuego() {
+      const cantidad = parseInt(document.getElementById('numJugadores').value);
+      jugadores = [];
+      historialRondas = [];
+
+      for (let i = 0; i < cantidad; i++) {
+        const nombre = document.getElementById(`jugador${i}`).value.trim();
+        if (!nombre) {
+          alert(`Por favor ingresa el nombre del jugador ${i + 1}`);
+          return;
+        }
+        jugadores.push({
+          nombre,
+          total: 0,
+          pequena: 0,
+          mediana: 0,
+          grande: 0,
+          rondasDetalle: []
+        });
+      }
+
+      juegoEnCurso = true;
+      ronda = 1;
+      turno = 0;
+
+      cerrarModal('modalJugadores');
+      document.getElementById('inicio').style.display = 'none';
+      document.getElementById('tablaContainer').style.display = 'block';
+      actualizarTabla();
+      actualizarTurnoInfo();
+    }
+
+    // FUNCIÓN MODIFICADA
+    function mostrarTurno() {
+      if (!juegoEnCurso) return;
+      
+      document.getElementById('tituloTurno').textContent = 
+        `🎯 Turno de ${jugadores[turno].nombre} - Ronda ${ronda}`;
+      
+      // Actualizar información de puntajes en el modal
+      document.getElementById('puntajeInfo').innerHTML = `
+        <strong>Instrucciones:</strong><br>
+        1. Ingresa el puntaje total obtenido en el tiro<br>
+        2. Selecciona manualmente cuántas ranas de cada tipo obtuviste<br>
+        <em>El sistema te mostrará el cálculo automático para verificar</em>
+      `;
+
+      // Actualizar los valores de puntos en el modal
+      document.getElementById('puntosRanaPequeña').textContent = `${puntos.pequena} pts c/u`;
+      document.getElementById('puntosRanaMediana').textContent = `${puntos.mediana} pts c/u`;
+      document.getElementById('puntosRanaGrande').textContent = `${puntos.grande} pts c/u`;
+      
+      // Resetear valores
+      document.getElementById('puntajeTiro').value = 0;
+      document.getElementById('cantidadRanaPequena').value = 0;
+      document.getElementById('cantidadRanaMediana').value = 0;
+      document.getElementById('cantidadRanaGrande').value = 0;
+      actualizarCalculoTotal();
+      
+      document.getElementById('modalTurno').style.display = 'block';
+      document.getElementById('puntajeTiro').focus();
+    }
+
+    // NUEVA FUNCIÓN PARA CALCULAR TOTAL
+    function actualizarCalculoTotal() {
+      const pequenas = parseInt(document.getElementById('cantidadRanaPequena').value) || 0;
+      const medianas = parseInt(document.getElementById('cantidadRanaMediana').value) || 0;
+      const grandes = parseInt(document.getElementById('cantidadRanaGrande').value) || 0;
+      
+      const totalRanas = (pequenas * puntos.pequena) + (medianas * puntos.mediana) + (grandes * puntos.grande);
+      
+      document.getElementById('totalCalculado').innerHTML = `
+        Total por ranas: <strong>${totalRanas}</strong> puntos<br>
+        <small>(${pequenas} × ${puntos.pequena} + ${medianas} × ${puntos.mediana} + ${grandes} × ${puntos.grande})</small>
+      `;
+    }
+
+    // FUNCIÓN MODIFICADA
+    function registrarTiro() {
+      const puntajeTotal = parseInt(document.getElementById('puntajeTiro').value) || 0;
+      const pequenas = parseInt(document.getElementById('cantidadRanaPequena').value) || 0;
+      const medianas = parseInt(document.getElementById('cantidadRanaMediana').value) || 0;
+      const grandes = parseInt(document.getElementById('cantidadRanaGrande').value) || 0;
+
+      if (puntajeTotal < 0) {
+        alert('El puntaje no puede ser negativo');
+        return;
+      }
+
+      if (pequenas < 0 || medianas < 0 || grandes < 0) {
+        alert('Las cantidades de ranas no pueden ser negativas');
+        return;
+      }
+
+      // Registrar el puntaje y las ranas manualmente seleccionadas
+      registrarPuntaje(puntajeTotal, pequenas, medianas, grandes);
+    }
+
+    function registrarPuntaje(puntaje, pequenas, medianas, grandes) {
+      let jugador = jugadores[turno];
+      
+      // Actualizar contadores
+      jugador.pequena += pequenas;
+      jugador.mediana += medianas;
+      jugador.grande += grandes;
+      jugador.total += puntaje;
+
+      // Guardar detalle de la ronda
+      if (!jugador.rondasDetalle[ronda - 1]) {
+        jugador.rondasDetalle[ronda - 1] = {
+          puntaje: 0,
+          pequenas: 0,
+          medianas: 0,
+          grandes: 0
+        };
+      }
+      
+      jugador.rondasDetalle[ronda - 1].puntaje += puntaje;
+      jugador.rondasDetalle[ronda - 1].pequenas += pequenas;
+      jugador.rondasDetalle[ronda - 1].medianas += medianas;
+      jugador.rondasDetalle[ronda - 1].grandes += grandes;
+
+      cerrarModal('modalTurno');
+      actualizarTabla();
+
+      // Verificar si hay ganador
+      if (jugador.total >= meta) {
+        setTimeout(() => {
+          mostrarResumenFinal(jugador);
+        }, 500);
+        return;
+      }
+
+      // Siguiente turno
+      turno++;
+      if (turno >= jugadores.length) {
+        turno = 0;
+        ronda++;
+      }
+      actualizarTurnoInfo();
+    }
+
+    function actualizarTabla() {
+      const cuerpo = document.getElementById('cuerpoTabla');
+      cuerpo.innerHTML = '';
+      
+      // Ordenar jugadores por puntaje (mayor a menor)
+      const jugadoresOrdenados = [...jugadores].sort((a, b) => b.total - a.total);
+      
+      jugadoresOrdenados.forEach((j, index) => {
+        const fila = document.createElement('tr');
+        if (index === 0 && j.total > 0) {
+          fila.style.backgroundColor = '#d4edda';
+        }
+        fila.innerHTML = `
+          <td>${j.nombre}</td>
+          <td><strong>${j.total}</strong></td>
+          <td>${j.pequena}</td>
+          <td>${j.mediana}</td>
+          <td>${j.grande}</td>
+        `;
+        cuerpo.appendChild(fila);
+      });
+    }
+
+    function actualizarTurnoInfo() {
+      const info = document.getElementById('turnoInfo');
+      info.innerHTML = `
+        🎮 <strong>Ronda ${ronda}</strong> - 
+        ⏭️ <strong>Turno:</strong> ${jugadores[turno].nombre} - 
+        🎯 <strong>Meta:</strong> ${meta} puntos
+      `;
+    }
+
+    function mostrarResumenFinal(ganador) {
+      juegoEnCurso = false;
+      
+      // Mostrar información del ganador
+      document.getElementById('ganadorFinal').innerHTML = `
+        <div class="winner-alert">
+          🏆 ¡FELICITACIONES! 🏆<br>
+          <strong>${ganador.nombre}</strong> ha ganado con <strong>${ganador.total}</strong> puntos!
+        </div>
+      `;
+
+      // Crear tabla de resumen por rondas
+      let tablaHTML = `
+        <h3>📊 Resumen Detallado por Rondas</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Jugador</th>
+              <th>Total</th>
+      `;
+      
+      // Agregar columnas para cada ronda
+      for (let i = 1; i <= ronda; i++) {
+        tablaHTML += `<th>Ronda ${i}</th>`;
+      }
+      
+      tablaHTML += `
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      // Ordenar jugadores por puntaje final
+      const jugadoresOrdenados = [...jugadores].sort((a, b) => b.total - a.total);
+
+      jugadoresOrdenados.forEach((jugador, index) => {
+        tablaHTML += `
+          <tr ${index === 0 ? 'style="background-color: #d4edda;"' : ''}>
+            <td><strong>${jugador.nombre}</strong></td>
+            <td><strong>${jugador.total}</strong></td>
+        `;
+        
+        // Agregar puntajes por ronda
+        for (let i = 0; i < ronda; i++) {
+          const rondaData = jugador.rondasDetalle[i];
+          if (rondaData) {
+            tablaHTML += `<td>${rondaData.puntaje}</td>`;
+          } else {
+            tablaHTML += `<td>0</td>`;
+          }
+        }
+        
+        tablaHTML += `</tr>`;
+      });
+
+      tablaHTML += `
+          </tbody>
+        </table>
+
+        <h3>🐸 Resumen de Ranas por Jugador</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Jugador</th>
+              <th>🐸 Pequeñas (${puntos.pequena}pts)</th>
+              <th>🐸 Medianas (${puntos.mediana}pts)</th>
+              <th>🐸 Grandes (${puntos.grande}pts)</th>
+              <th>Total Puntos</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      jugadoresOrdenados.forEach((jugador, index) => {
+        tablaHTML += `
+          <tr ${index === 0 ? 'style="background-color: #d4edda;"' : ''}>
+            <td><strong>${jugador.nombre}</strong></td>
+            <td>${jugador.pequena}</td>
+            <td>${jugador.mediana}</td>
+            <td>${jugador.grande}</td>
+            <td><strong>${jugador.total}</strong></td>
+          </tr>
+        `;
+      });
+
+      tablaHTML += `
+          </tbody>
+        </table>
+      `;
+
+      document.getElementById('resumenContenido').innerHTML = tablaHTML;
+      document.getElementById('modalResumen').style.display = 'block';
+    }
+
+    function reiniciarJuego() {
+      if (confirm('¿Estás seguro de que quieres reiniciar el juego?')) {
+        location.reload();
+      }
+    }
+
+    function cerrarModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+      if (modalId === 'modalResumen') {
+        location.reload();
+      }
+    }
+
+    function volverConfiguracion() {
+      cerrarModal('modalJugadores');
+      document.getElementById('modalConfiguracion').style.display = 'block';
+    }
+
+    // Cerrar modales al hacer clic fuera
+    window.onclick = function(event) {
+      if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+      }
+    }
+
+    // Permitir Enter para confirmar acciones
+    document.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        if (document.getElementById('modalConfiguracion').style.display === 'block') {
+          configurarJugadores();
+        } else if (document.getElementById('modalJugadores').style.display === 'block') {
+          iniciarJuego();
+        } else if (document.getElementById('modalTurno').style.display === 'block') {
+          registrarTiro();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
