@@ -65,6 +65,137 @@
       background-color: rgba(0,0,0,0.5);
       animation: fadeIn 0.3s ease;
     }
+    
+     @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+            .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            animation: confetti-fall linear infinite;
+            transform-origin: center center;
+        }
+
+        .confetti.square {
+            background: #ff6b6b;
+            transform: rotate(45deg);
+        }
+
+        .confetti.circle {
+            background: #4ecdc4;
+            border-radius: 50%;
+        }
+
+        .confetti.triangle {
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 12px solid #45b7d1;
+        }
+
+        .confetti.rectangle {
+            width: 8px;
+            height: 16px;
+            background: #f9ca24;
+        }
+
+        .confetti.diamond {
+            background: #6c5ce7;
+            transform: rotate(45deg);
+            border-radius: 20%;
+        }
+
+        .confetti.star {
+            background: #fd79a8;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        .confetti.heart {
+            width: 12px;
+            height: 12px;
+            background: #e17055;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            transform: rotate(-45deg);
+        }
+
+        .confetti.heart::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: #e17055;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute;
+            left: -6px;
+            top: 0;
+            transform: rotate(-90deg);
+        }
+
+        .confetti.heart::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: #e17055;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute;
+            left: 0;
+            top: -6px;
+            transform: rotate(90deg);
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) rotate(360deg);
+            }
+        }
+
+        .button-container {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .celebration-btn {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .celebration-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .celebration-btn:active {
+            transform: translateY(0);
+        }
 
     @keyframes fadeIn {
       from { opacity: 0; }
@@ -78,10 +209,11 @@
       border-radius: 15px;
       width: 90%;
       max-width: 600px;
-      max-height: 80vh;
+      max-height: 78vh;
       overflow-y: auto;
       box-shadow: 0 20px 40px rgba(0,0,0,0.3);
       animation: slideIn 0.3s ease;
+      box-sizing: border-box;
     }
 
     @keyframes slideIn {
@@ -113,6 +245,7 @@
       border-radius: 8px;
       font-size: 16px;
       transition: border-color 0.3s ease;
+      box-sizing: border-box;
     }
 
     .form-group input:focus {
@@ -328,7 +461,7 @@
 
     .resumen-final {
       max-width: 1200px;
-      margin: 10% auto 0 auto;
+      margin: 5% auto 0 auto;
     }
 
     .resumen-final table {
@@ -348,9 +481,142 @@
       background: linear-gradient(45deg, #dc3545, #c82333);
       margin-top: 20px;
     }
+    
+    /* Estilos para el selector de modo de juego mejorado */
+.modo-juego-container { 
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
+    border-radius: 15px; 
+    padding: 25px; 
+    margin: 20px 0; 
+    /* Removido el borde verde que causaba el problema */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1); 
+} 
+
+.modo-juego-title { 
+    text-align: center; 
+    font-size: 20px; 
+    font-weight: bold; 
+    color: #333; 
+    margin-bottom: 25px; 
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1); 
+} 
+
+.modo-selector { 
+    display: flex; 
+    justify-content: center; 
+    gap: 20px; 
+    margin-bottom: 20px; 
+    /* Ajustado el padding para mejor alineación */
+    padding: 0 10px;
+} 
+
+.modo-option { 
+    position: relative; 
+    cursor: pointer; 
+    transition: all 0.3s ease; 
+} 
+
+.modo-option input[type="radio"] { 
+    position: absolute; 
+    opacity: 0; 
+    cursor: pointer; 
+} 
+
+.modo-card {
+    background: white;
+    border: 3px solid #ddd;
+    border-radius: 15px;
+    padding: 18px 25px;
+    text-align: center;
+    transition: all 0.3s ease;
+    min-width: 100px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* HOVER SOLO PARA TARJETAS NO SELECCIONADAS */ 
+.modo-option input[type="radio"]:not(:checked) + .modo-card:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15); 
+    border-color: #aaa; 
+} 
+
+/* ESTILOS PARA TARJETA SELECCIONADA */ 
+.modo-option input[type="radio"]:checked + .modo-card { 
+    border-color: #76b947; 
+    background: linear-gradient(135deg, #e8f5e8, #d4edda); 
+    transform: translateY(-3px); 
+    box-shadow: 0 6px 20px rgba(118, 185, 71, 0.3); 
+} 
+
+.modo-icon { 
+    font-size: 2.5em; 
+    margin-bottom: 10px; 
+    display: block; 
+    /* Centrar mejor el icono */
+    line-height: 1;
+} 
+
+.modo-title { 
+    font-weight: bold; 
+    font-size: 16px; 
+    color: #333; 
+    margin-bottom: 5px; 
+} 
+
+.modo-description { 
+    font-size: 12px; 
+    color: #666; 
+    line-height: 1.3; 
+} 
+
+.modo-option input[type="radio"]:checked + .modo-card .modo-title { 
+    color: #76b947; 
+} 
+
+.modo-option input[type="radio"]:checked + .modo-card .modo-icon { 
+    animation: bounce 0.6s ease; 
+} 
+
+@keyframes bounce { 
+    0%, 20%, 50%, 80%, 100% { 
+        transform: translateY(0); 
+    } 
+    40% { 
+        transform: translateY(-10px); 
+    } 
+    60% { 
+        transform: translateY(-5px); 
+    } 
+}
+
+/* Animación para la transición de configuración de equipos */
+.configuracion-equipos-transition {
+  transition: all 0.5s ease;
+  overflow: hidden;
+}
+
+.configuracion-equipos-transition.show {
+  max-height: 400px;
+  opacity: 1;
+  margin-top: 15px;
+}
+
+.configuracion-equipos-transition.hide {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+}
   </style>
 </head>
 <body>
+  <audio id="audioResumen" src="celebracion.mp3" preload="auto"></audio>
+  <div class="confetti-container" id="confettiContainer"></div>
+  
   <div class="container">
     <h1>🐸 Juego de Rana Tradicional 🐸</h1>
     
@@ -392,14 +658,102 @@
   <div id="modalConfiguracion" class="modal">
     <div class="modal-content">
       <h2>⚙️ Configuración del Juego</h2>
-      <div class="form-group">
+         <div class="modo-juego-container">
+    <div class="modo-juego-title">🎮 Selecciona el Modo de Juego</div>
+    
+    <div class="modo-selector">
+        <div class="modo-option">
+            <input type="radio" id="modoIndividual" name="modoJuego" value="individual" checked onchange="toggleModoEquipos()">
+            <label for="modoIndividual" class="modo-card">
+                <span class="modo-icon">👤</span>
+                <div class="modo-title">Individual</div>
+                <div class="modo-description">Cada jugador compite por sí mismo</div>
+            </label>
+        </div>
+        
+        <div class="modo-option">
+            <input type="radio" id="modoEquipos" name="modoJuego" value="equipos" onchange="toggleModoEquipos()">
+            <label for="modoEquipos" class="modo-card">
+                <span class="modo-icon">👥</span>
+                <div class="modo-title">En Equipos</div>
+                <div class="modo-description">Los jugadores se organizan en equipos</div>
+            </label>
+        </div>
+    </div>
+           
+</div>
+      <div class="modo-juego-container">
+    <div class="modo-juego-title">🎯 Selecciona el Tipo de Juego</div>
+    
+    <div class="modo-selector">
+        <div class="modo-option">
+            <input type="radio" id="tipoMeta" name="tipoJuego" value="meta" checked onchange="toggleTipoJuego()">
+            <label for="tipoMeta" class="modo-card">
+                <span class="modo-icon">🏆</span>
+                <div class="modo-title">Por Meta</div>
+                <div class="modo-description">El primero en alcanzar la meta gana</div>
+            </label>
+        </div>
+        
+        <div class="modo-option">
+            <input type="radio" id="tipoRondas" name="tipoJuego" value="rondas" onchange="toggleTipoJuego()">
+            <label for="tipoRondas" class="modo-card">
+                <span class="modo-icon">🔄</span>
+                <div class="modo-title">Por Rondas</div>
+                <div class="modo-description">Al final de X rondas, el mayor puntaje gana</div>
+            </label>
+        </div>
+    </div>
+</div>
+<div id="configuracionEquiposDiv" class="configuracion-equipos-transition hide">
+    <div class="form-group">
+        <label>Número de equipos:</label>
+        <input type="number" id="numEquipos" min="2" max="5" value="2" onchange="actualizarNumeroJugadores()">
+    </div>
+    <div class="form-group">
+        <label>Jugadores por equipo:</label>
+        <input type="number" id="jugadoresPorEquipo" min="1" max="5" value="2" onchange="actualizarNumeroJugadores()">
+    </div>
+    
+    <!-- Configuración por Meta para Equipos -->
+    <div id="configMetaEquipos" class="configuracion-equipos-transition show">
+        <div class="form-group">
+            <label>Meta de puntaje:</label>
+            <input type="number" id="metaPuntajeEquipos" min="100" max="1000" value="150">
+        </div>
+    </div>
+    
+    <!-- Configuración por Rondas para Equipos -->
+    <div id="configRondasEquipos" class="configuracion-equipos-transition hide">
+        <div class="form-group">
+            <label>Número de rondas:</label>
+            <input type="number" id="numRondasEquipos" min="3" max="20" value="5">
+        </div>
+    </div>
+</div>
+<!-- Configuración para modo individual -->
+<div id="configuracionIndividualDiv" class="configuracion-equipos-transition show">
+    <div class="form-group">
         <label>Cantidad de jugadores:</label>
         <input type="number" id="numJugadores" min="1" max="10" value="2">
-      </div>
-      <div class="form-group">
-        <label>Meta de puntaje:</label>
-        <input type="number" id="metaPuntaje" value="100">
-      </div>
+    </div>
+    
+    <!-- Configuración por Meta -->
+    <div id="configMeta" class="configuracion-equipos-transition show">
+        <div class="form-group">
+            <label>Meta de puntaje:</label>
+            <input type="number" id="metaPuntaje" min="50" max="1000" value="100">
+        </div>
+    </div>
+    
+    <!-- Configuración por Rondas -->
+    <div id="configRondas" class="configuracion-equipos-transition hide">
+        <div class="form-group">
+            <label>Número de rondas:</label>
+            <input type="number" id="numRondas" min="3" max="20" value="5">
+        </div>
+    </div>
+</div>
       <div class="form-group">
         <label>Puntaje Rana Pequeña:</label>
         <input type="number" id="ranaPequena" value="5">
@@ -521,6 +875,158 @@
   </div>
 
   <script>
+
+function toggleModoEquipos() {
+    const modoEquiposRadio = document.getElementById('modoEquipos');
+    modoEquipos = modoEquiposRadio.checked;
+    
+    const configEquiposDiv = document.getElementById('configuracionEquiposDiv');
+    const configIndividualDiv = document.getElementById('configuracionIndividualDiv');
+    const numJugadoresInput = document.getElementById('numJugadores');
+    
+    if (modoEquipos) {
+        // Mostrar configuración de equipos, ocultar individual
+        configEquiposDiv.className = 'configuracion-equipos-transition show';
+        configIndividualDiv.className = 'configuracion-equipos-transition hide';
+        numJugadoresInput.disabled = true;
+        actualizarNumeroJugadores();
+    } else {
+        // Mostrar configuración individual, ocultar equipos
+        configEquiposDiv.className = 'configuracion-equipos-transition hide';
+        configIndividualDiv.className = 'configuracion-equipos-transition show';
+        numJugadoresInput.disabled = false;
+    }
+    
+    // LÍNEA AGREGADA: Actualizar la visibilidad de meta/rondas después del cambio
+    toggleTipoJuego();
+}  
+    
+function toggleTipoJuego() {
+    const tipoMetaRadio = document.getElementById('tipoMeta');
+    modoJuegoPorMeta = tipoMetaRadio.checked;
+    
+    // Configuración individual
+    const configMeta = document.getElementById('configMeta');
+    const configRondas = document.getElementById('configRondas');
+    
+    // Configuración equipos
+    const configMetaEquipos = document.getElementById('configMetaEquipos');
+    const configRondasEquipos = document.getElementById('configRondasEquipos');
+    
+    if (modoJuegoPorMeta) {
+        // Mostrar configuración por meta
+        configMeta.className = 'configuracion-equipos-transition show';
+        configRondas.className = 'configuracion-equipos-transition hide';
+        configMetaEquipos.className = 'configuracion-equipos-transition show';
+        configRondasEquipos.className = 'configuracion-equipos-transition hide';
+    } else {
+        // Mostrar configuración por rondas
+        configMeta.className = 'configuracion-equipos-transition hide';
+        configRondas.className = 'configuracion-equipos-transition show';
+        configMetaEquipos.className = 'configuracion-equipos-transition hide';
+        configRondasEquipos.className = 'configuracion-equipos-transition show';
+    }
+}
+
+function actualizarNumeroJugadores() {
+    const numEquipos = parseInt(document.getElementById('numEquipos').value) || 2;
+    const jugadoresPorEquipo = parseInt(document.getElementById('jugadoresPorEquipo').value) || 2;
+    document.getElementById('numJugadores').value = numEquipos * jugadoresPorEquipo;
+}
+    
+    const confettiContainer = document.getElementById('confettiContainer');
+        const shapes = ['square', 'circle', 'triangle', 'rectangle', 'diamond', 'star', 'heart'];
+        const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#6c5ce7', '#fd79a8', '#e17055', '#00d2d3', '#ff7675', '#a29bfe'];
+
+        function createConfetti(startX, startY) {
+            const confetti = document.createElement('div');
+            confetti.className = `confetti ${shapes[Math.floor(Math.random() * shapes.length)]}`;
+            
+            // Posición inicial
+            confetti.style.left = startX + 'px';
+            confetti.style.bottom = startY + 'px';
+            
+            // Color aleatorio
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            if (!confetti.classList.contains('triangle') && !confetti.classList.contains('star') && !confetti.classList.contains('heart')) {
+                confetti.style.background = color;
+            }
+            
+            // Animación personalizada
+            const duration = Math.random() * 4 + 3; // 2-5 segundos
+            const delay = Math.random() * 0.5;
+            const endX = window.innerWidth / 2 + (Math.random() - 0.5) * 800; // Hacia el centro con variación
+            const endY = window.innerHeight + 100;
+            
+            confetti.style.animationDuration = duration + 's';
+            confetti.style.animationDelay = delay + 's';
+            
+            // Trayectoria hacia el centro
+            confetti.animate([
+                {
+                    transform: `translate(0, 0) rotate(0deg)`,
+                    opacity: 1
+                },
+                {
+                    transform: `translate(${endX - startX}px, -${endY}px) rotate(${Math.random() * 720}deg)`,
+                    opacity: 0
+                }
+            ], {
+                duration: (duration + delay) * 1000,
+                easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+            });
+            
+            confettiContainer.appendChild(confetti);
+            
+            // Eliminar después de la animación
+            setTimeout(() => {
+                if (confetti.parentNode) {
+                    confetti.parentNode.removeChild(confetti);
+                }
+            }, (duration + delay + 0.5) * 1000);
+        }
+
+        function createConfettiFromCorners() {
+            // Esquina inferior izquierda - más confeti
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    createConfetti(Math.random() * 100, Math.random() * 50);
+                }, i * 50);
+            }
+            
+            // Esquina inferior derecha - más confeti
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    createConfetti(window.innerWidth - Math.random() * 100, Math.random() * 50);
+                }, i * 50);
+            }
+        }
+
+        function createInitialBurst() {
+            // Ráfaga inicial masiva
+            for (let burst = 0; burst < 3; burst++) {
+                setTimeout(() => {
+                    createConfettiFromCorners();
+                }, burst * 300);
+            }
+        }
+
+        function createConfettiBurst() {
+            // Crear ráfaga desde ambas esquinas
+            createConfettiFromCorners();
+        }
+
+        // Iniciar confeti automático
+        function startAutoConfetti() {
+            createConfettiFromCorners();
+            setTimeout(startAutoConfetti, 3000); // Cada 3 segundos
+        }
+
+        // Responsive
+        window.addEventListener('resize', () => {
+            // Limpiar confeti existente si es necesario
+        });
+    
     let jugadores = [];
     let ronda = 1;
     let turno = 0;
@@ -528,78 +1034,240 @@
     let puntos = { pequena: 0, mediana: 0, grande: 0 };
     let juegoEnCurso = false;
     let historialRondas = [];
+    let modoEquipos = false;
+    let equipos = [];
+    let configuracionEquipos = [];
+    let turnoEquipo = 0;          // Qué equipo está jugando
+    let turnoJugadorEnEquipo = 0; // Qué jugador del equipo actual está jugando
+    let turnoAlternados = [];
+    let turnoActualIndex = 0;
+    let modoJuegoPorMeta = true; // true = por meta, false = por rondas
+    let numeroRondasTotal = 5;   // número total de rondas cuando se juega por rondas 
 
     function mostrarConfiguracion() {
       document.getElementById('modalConfiguracion').style.display = 'block';
     }
 
-    function configurarJugadores() {
-      const cantidad = parseInt(document.getElementById('numJugadores').value);
-      if (!cantidad || cantidad < 1) {
-        alert('Por favor ingresa un número válido de jugadores');
-        return;
-      }
-
-      meta = parseInt(document.getElementById('metaPuntaje').value);
-      puntos.pequena = parseInt(document.getElementById('ranaPequena').value);
-      puntos.mediana = parseInt(document.getElementById('ranaMediana').value);
-      puntos.grande = parseInt(document.getElementById('ranaGrande').value);
-
-      const container = document.getElementById('jugadoresInputs');
-      container.innerHTML = '';
-
-      for (let i = 0; i < cantidad; i++) {
-        const playerDiv = document.createElement('div');
-        playerDiv.className = 'player-input';
-        playerDiv.innerHTML = `
-          <label>Nombre del Jugador ${i + 1}:</label>
-          <input type="text" id="jugador${i}" placeholder="Ingresa el nombre..." required>
-        `;
-        container.appendChild(playerDiv);
-      }
-
-      cerrarModal('modalConfiguracion');
-      document.getElementById('modalJugadores').style.display = 'block';
+function configurarJugadores() {
+    let cantidad;
+    
+    if (modoEquipos) {
+        const numEquipos = parseInt(document.getElementById('numEquipos').value);
+        const jugadoresPorEquipo = parseInt(document.getElementById('jugadoresPorEquipo').value);
+        cantidad = numEquipos * jugadoresPorEquipo;
+        
+        // Guardar configuración de equipos
+        configuracionEquipos = {
+            numEquipos: numEquipos,
+            jugadoresPorEquipo: jugadoresPorEquipo
+        };
+    } else {
+        cantidad = parseInt(document.getElementById('numJugadores').value);
     }
 
-    function iniciarJuego() {
-      const cantidad = parseInt(document.getElementById('numJugadores').value);
-      jugadores = [];
-      historialRondas = [];
+    if (!cantidad || cantidad < 1) {
+        alert('Por favor configura correctamente los jugadores');
+        return;
+    }
 
-      for (let i = 0; i < cantidad; i++) {
+    // NUEVA LÓGICA: Configurar según tipo de juego
+    if (modoJuegoPorMeta) {
+        if (modoEquipos) {
+            meta = parseInt(document.getElementById('metaPuntajeEquipos').value) || 150;
+        } else {
+            meta = parseInt(document.getElementById('metaPuntaje').value) || 100;
+        }
+        numeroRondasTotal = 999; // Número muy alto para que no termine por rondas
+    } else {
+        if (modoEquipos) {
+            numeroRondasTotal = parseInt(document.getElementById('numRondasEquipos').value) || 5;
+        } else {
+            numeroRondasTotal = parseInt(document.getElementById('numRondas').value) || 5;
+        }
+        meta = 999999; // Meta muy alta para que no termine por puntaje
+    }
+
+    puntos.pequena = parseInt(document.getElementById('ranaPequena').value);
+    puntos.mediana = parseInt(document.getElementById('ranaMediana').value);
+    puntos.grande = parseInt(document.getElementById('ranaGrande').value);
+
+    generarInputsJugadores(cantidad);
+    
+    cerrarModal('modalConfiguracion');
+    document.getElementById('modalJugadores').style.display = 'block';
+}
+    
+    function generarInputsJugadores(cantidad) {
+    const container = document.getElementById('jugadoresInputs');
+    container.innerHTML = '';
+
+    if (modoEquipos) {
+        const { numEquipos, jugadoresPorEquipo } = configuracionEquipos;
+        
+        for (let equipo = 0; equipo < numEquipos; equipo++) {
+            const equipoDiv = document.createElement('div');
+            equipoDiv.style.marginBottom = '20px';
+            equipoDiv.style.padding = '15px';
+            equipoDiv.style.backgroundColor = '#f8f9fa';
+            equipoDiv.style.borderRadius = '10px';
+            equipoDiv.style.border = '2px solid #76b947';
+            
+            equipoDiv.innerHTML = `<h3 style="color: #76b947; text-align: center;">🤼‍ Equipo ${equipo + 1}</h3>`;
+            
+            for (let jugador = 0; jugador < jugadoresPorEquipo; jugador++) {
+                const playerDiv = document.createElement('div');
+                playerDiv.className = 'player-input';
+                const indiceGlobal = equipo * jugadoresPorEquipo + jugador;
+                playerDiv.innerHTML = `
+                    <label>Jugador ${jugador + 1}:</label>
+                    <input type="text" id="jugador${indiceGlobal}" placeholder="Nombre del jugador..." required>
+                `;
+                equipoDiv.appendChild(playerDiv);
+            }
+            container.appendChild(equipoDiv);
+        }
+    } else {
+        // Modo normal (como estaba antes)
+        for (let i = 0; i < cantidad; i++) {
+            const playerDiv = document.createElement('div');
+            playerDiv.className = 'player-input';
+            playerDiv.innerHTML = `
+                <label>Nombre del Jugador ${i + 1}:</label>
+                <input type="text" id="jugador${i}" placeholder="Ingresa el nombre..." required>
+            `;
+            container.appendChild(playerDiv);
+        }
+    }
+}
+
+    // Crear lista alternada al inicializar
+function crearListaAlternada() {
+    let listaAlternada = [];
+    
+    // Verificar que los equipos tengan miembros
+    if (!equipos || equipos.length === 0) {
+        return [];
+    }
+    
+    let maxJugadoresPorEquipo = Math.max(...equipos.map(e => e.miembros ? e.miembros.length : 0));
+    
+    for (let rondaJugador = 0; rondaJugador < maxJugadoresPorEquipo; rondaJugador++) {
+        for (let equipoIndex = 0; equipoIndex < equipos.length; equipoIndex++) {
+            if (equipos[equipoIndex].miembros && equipos[equipoIndex].miembros[rondaJugador]) {
+                listaAlternada.push({
+                    jugador: equipos[equipoIndex].miembros[rondaJugador],
+                    equipo: equipoIndex
+                });
+            }
+        }
+    }
+    return listaAlternada;
+}
+    
+function obtenerJugadorActual() {
+    if (modoEquipos) {
+        if (turnosAlternados && turnosAlternados.length > 0 && turnoActualIndex < turnosAlternados.length) {
+            return turnosAlternados[turnoActualIndex].jugador;
+        } else {
+            // Fallback: devolver el primer jugador disponible
+            return jugadores[0];
+        }
+    } else {
+        return jugadores[turno];
+    }
+} 
+function iniciarJuego() {
+    let cantidad;
+    
+    if (modoEquipos) {
+        cantidad = configuracionEquipos.numEquipos * configuracionEquipos.jugadoresPorEquipo;
+    } else {
+        cantidad = parseInt(document.getElementById('numJugadores').value);
+    }
+
+    jugadores = [];
+    equipos = [];
+    historialRondas = [];
+
+if (modoEquipos) {
+    // Inicializar equipos PRIMERO
+    for (let e = 0; e < configuracionEquipos.numEquipos; e++) {
+        equipos.push({
+            nombre: `Equipo ${e + 1}`,
+            total: 0,
+            pequena: 0,
+            mediana: 0,
+            grande: 0,
+            miembros: [],
+            rondasDetalle: []
+        });
+    }
+}
+
+    for (let i = 0; i < cantidad; i++) {
         const nombre = document.getElementById(`jugador${i}`).value.trim();
         if (!nombre) {
-          alert(`Por favor ingresa el nombre del jugador ${i + 1}`);
-          return;
+            alert(`Por favor ingresa el nombre del jugador ${i + 1}`);
+            return;
         }
-        jugadores.push({
-          nombre,
-          total: 0,
-          pequena: 0,
-          mediana: 0,
-          grande: 0,
-          rondasDetalle: []
-        });
-      }
+        
+        const jugador = {
+            nombre,
+            total: 0,
+            pequena: 0,
+            mediana: 0,
+            grande: 0,
+            rondasDetalle: []
+        };
 
-      juegoEnCurso = true;
-      ronda = 1;
-      turno = 0;
-
-      cerrarModal('modalJugadores');
-      document.getElementById('inicio').style.display = 'none';
-      document.getElementById('tablaContainer').style.display = 'block';
-      actualizarTabla();
-      actualizarTurnoInfo();
+        if (modoEquipos) {
+            const equipoIndex = Math.floor(i / configuracionEquipos.jugadoresPorEquipo);
+            jugador.equipo = equipoIndex;
+            equipos[equipoIndex].miembros.push(jugador);
+        }
+        
+        jugadores.push(jugador);
     }
 
+// Crear lista alternada DESPUÉS de que todos los jugadores estén asignados a equipos
+if (modoEquipos) {
+    turnosAlternados = crearListaAlternada();
+    turnoActualIndex = 0;
+}
+
+juegoEnCurso = true;
+ronda = 1;
+turno = 0;
+turnoEquipo = 0;
+turnoJugadorEnEquipo = 0;
+
+    cerrarModal('modalJugadores');
+    document.getElementById('inicio').style.display = 'none';
+    document.getElementById('tablaContainer').style.display = 'block';
+    actualizarTabla();
+    actualizarTurnoInfo();
+}
+
+function obtenerJugadorActual() {
+    if (modoEquipos) {
+        return turnosAlternados[turnoActualIndex].jugador;
+    } else {
+        return jugadores[turno];
+    }
+}
+    
     // FUNCIÓN MODIFICADA
     function mostrarTurno() {
       if (!juegoEnCurso) return;
       
-      document.getElementById('tituloTurno').textContent = 
-        `🎯 Turno de ${jugadores[turno].nombre} - Ronda ${ronda}`;
+const jugadorActual = obtenerJugadorActual();
+let tituloTurno = `🎯 Turno de ${jugadorActual.nombre} - Ronda ${ronda}`;
+
+if (modoEquipos && jugadorActual.equipo !== undefined) {
+    tituloTurno += ` (${equipos[jugadorActual.equipo].nombre})`;
+}
+
+document.getElementById('tituloTurno').textContent = tituloTurno;
       
       // Actualizar información de puntajes en el modal
       document.getElementById('puntajeInfo').innerHTML = `
@@ -661,90 +1329,199 @@
     }
 
     function registrarPuntaje(puntaje, pequenas, medianas, grandes) {
-      let jugador = jugadores[turno];
+      let jugador = obtenerJugadorActual();
       
       // Actualizar contadores
       jugador.pequena += pequenas;
       jugador.mediana += medianas;
       jugador.grande += grandes;
       jugador.total += puntaje;
+      // Guardar detalle de esta ronda
+      jugador.rondasDetalle[ronda - 1] = {
+        puntaje: puntaje,
+        pequenas,
+        medianas,
+        grandes
+};
+if (modoEquipos) {
+  const equipo = equipos[jugador.equipo];
+  equipo.total += puntaje;
+  equipo.pequena += pequenas;
+  equipo.mediana += medianas;
+  equipo.grande += grandes;
+}
 
-      // Guardar detalle de la ronda
-      if (!jugador.rondasDetalle[ronda - 1]) {
-        jugador.rondasDetalle[ronda - 1] = {
-          puntaje: 0,
-          pequenas: 0,
-          medianas: 0,
-          grandes: 0
-        };
-      }
-      
-      jugador.rondasDetalle[ronda - 1].puntaje += puntaje;
-      jugador.rondasDetalle[ronda - 1].pequenas += pequenas;
-      jugador.rondasDetalle[ronda - 1].medianas += medianas;
-      jugador.rondasDetalle[ronda - 1].grandes += grandes;
-
-      cerrarModal('modalTurno');
-      actualizarTabla();
-
-      // Verificar si hay ganador
-      if (jugador.total >= meta) {
-        setTimeout(() => {
-          mostrarResumenFinal(jugador);
-        }, 500);
-        return;
-      }
-
-      // Siguiente turno
-      turno++;
-      if (turno >= jugadores.length) {
+      // Si estamos en modo equipos, actualizar también los totales del equipo
+// Avanzar turno
+if (modoEquipos) {
+    turnoActualIndex++;
+    if (turnoActualIndex >= turnosAlternados.length) {
+        turnoActualIndex = 0;
+        ronda++;
+    }
+} else {
+    turno++;
+    if (turno >= jugadores.length) {
         turno = 0;
         ronda++;
-      }
-      actualizarTurnoInfo();
+    }
+}
+
+// Verificar si hay ganador
+verificarGanador();
+      
+      actualizarTabla();
+actualizarTurnoInfo();
+cerrarModal('modalTurno');
     }
 
-    function actualizarTabla() {
-      const cuerpo = document.getElementById('cuerpoTabla');
-      cuerpo.innerHTML = '';
-      
-      // Ordenar jugadores por puntaje (mayor a menor)
-      const jugadoresOrdenados = [...jugadores].sort((a, b) => b.total - a.total);
-      
-      jugadoresOrdenados.forEach((j, index) => {
-        const fila = document.createElement('tr');
-        if (index === 0 && j.total > 0) {
-          fila.style.backgroundColor = '#d4edda';
+function verificarGanador() {
+    let hayGanador = false;
+    let ganador = null;
+    let esEquipo = false;
+    
+    if (modoJuegoPorMeta) {
+        // Verificar por meta de puntaje
+        if (modoEquipos) {
+            ganador = equipos.find(equipo => equipo.total >= meta);
+            if (ganador) {
+                hayGanador = true;
+                esEquipo = true;
+            }
+        } else {
+            ganador = jugadores.find(jugador => jugador.total >= meta);
+            if (ganador) {
+                hayGanador = true;
+                esEquipo = false;
+            }
         }
-        fila.innerHTML = `
-          <td>${j.nombre}</td>
-          <td><strong>${j.total}</strong></td>
-          <td>${j.pequena}</td>
-          <td>${j.mediana}</td>
-          <td>${j.grande}</td>
-        `;
-        cuerpo.appendChild(fila);
-      });
+    } else {
+        // Verificar por número de rondas
+        if (ronda > numeroRondasTotal) {
+            if (modoEquipos) {
+                ganador = [...equipos].sort((a, b) => b.total - a.total)[0];
+                esEquipo = true;
+            } else {
+                ganador = [...jugadores].sort((a, b) => b.total - a.total)[0];
+                esEquipo = false;
+            }
+            hayGanador = true;
+        }
     }
-
-    function actualizarTurnoInfo() {
-      const info = document.getElementById('turnoInfo');
-      info.innerHTML = `
-        🎮 <strong>Ronda ${ronda}</strong> - 
-        ⏭️ <strong>Turno:</strong> ${jugadores[turno].nombre} - 
-        🎯 <strong>Meta:</strong> ${meta} puntos
-      `;
+    
+    if (hayGanador && ganador) {
+        mostrarResumenFinal(ganador, esEquipo);
     }
+}
+    
+function actualizarTabla() {
+    const cuerpo = document.getElementById('cuerpoTabla');
+    cuerpo.innerHTML = '';
+    
+    if (modoEquipos) {
+        // Mostrar tabla por equipos
+        const equiposOrdenados = [...equipos].sort((a, b) => b.total - a.total);
+        
+        equiposOrdenados.forEach((equipo, index) => {
+            const fila = document.createElement('tr');
+            if (index === 0 && equipo.total > 0) {
+                fila.style.backgroundColor = '#d4edda';
+            }
+            fila.innerHTML = `
+                <td><strong>${equipo.nombre}</strong></td>
+                <td><strong>${equipo.total}</strong></td>
+                <td>${equipo.pequena}</td>
+                <td>${equipo.mediana}</td>
+                <td>${equipo.grande}</td>
+            `;
+            cuerpo.appendChild(fila);
+            
+            // Mostrar miembros del equipo
+            equipo.miembros.forEach(miembro => {
+                const filaMiembro = document.createElement('tr');
+                filaMiembro.style.backgroundColor = '#f8f9fa';
+                filaMiembro.style.fontSize = '0.9em';
+                filaMiembro.innerHTML = `
+                    <td style="padding-left: 30px;">→ ${miembro.nombre}</td>
+                    <td>${miembro.total}</td>
+                    <td>${miembro.pequena}</td>
+                    <td>${miembro.mediana}</td>
+                    <td>${miembro.grande}</td>
+                `;
+                cuerpo.appendChild(filaMiembro);
+            });
+        });
+    } else {
+        // Tabla normal (código existente)
+        const jugadoresOrdenados = [...jugadores].sort((a, b) => b.total - a.total);
+        
+        jugadoresOrdenados.forEach((j, index) => {
+            const fila = document.createElement('tr');
+            if (index === 0 && j.total > 0) {
+                fila.style.backgroundColor = '#d4edda';
+            }
+            fila.innerHTML = `
+                <td>${j.nombre}</td>
+                <td><strong>${j.total}</strong></td>
+                <td>${j.pequena}</td>
+                <td>${j.mediana}</td>
+                <td>${j.grande}</td>
+            `;
+            cuerpo.appendChild(fila);
+        });
+    }
+}
 
-    function mostrarResumenFinal(ganador) {
-      juegoEnCurso = false;
-      
-      // Mostrar información del ganador
-      document.getElementById('ganadorFinal').innerHTML = `
-        <div class="winner-alert">
-          🏆 ¡FELICITACIONES! 🏆<br>
-          <strong>${ganador.nombre}</strong> ha ganado con <strong>${ganador.total}</strong> puntos!
-        </div>
+function actualizarTurnoInfo() {
+    const jugadorActual = obtenerJugadorActual();
+    let infoTurno = `🎮 <strong>Ronda ${ronda}</strong>`;
+    
+    // Mostrar información del tipo de juego
+    if (!modoJuegoPorMeta) {
+        infoTurno += ` de ${numeroRondasTotal}`;
+    }
+    
+    infoTurno += ` - ⏭️ <strong>Turno:</strong> ${jugadorActual.nombre}`;
+    
+    if (modoEquipos && turnosAlternados.length > 0) {
+        const equipoActual = turnosAlternados[turnoActualIndex].equipo;
+        infoTurno += ` (${equipos[equipoActual].nombre})`;
+    }
+    
+    if (modoJuegoPorMeta) {
+        infoTurno += ` - 🎯 <strong>Meta:</strong> ${meta} puntos`;
+    } else {
+        infoTurno += ` - 🏁 <strong>Rondas restantes:</strong> ${Math.max(0, numeroRondasTotal - ronda + 1)}`;
+    }
+    
+    const info = document.getElementById('turnoInfo');
+    info.innerHTML = infoTurno;
+}
+    
+    function anunciarGanador(nombre) {
+        const mensaje = `Felicitaciones ${nombre}, eres el ganador`;
+
+        const utterance = new SpeechSynthesisUtterance(mensaje);
+        utterance.lang = 'es-ES';      // Español latino
+        utterance.rate = 1.1;            // Velocidad normal
+        utterance.pitch = 2;           // Tono de voz
+        utterance.volume = 1;          // Volumen máximo
+
+        speechSynthesis.cancel();      // Por si hay otra voz hablándose
+        speechSynthesis.speak(utterance);
+      }
+
+function mostrarResumenFinal(ganador, esEquipo = false) {
+    juegoEnCurso = false;
+    
+    // Mostrar información del ganador
+document.getElementById('ganadorFinal').innerHTML = `
+    <div class="winner-alert">
+        🏆 ¡FELICITACIONES! 🏆<br>
+        <strong>${ganador.nombre}</strong> ha ganado con <strong>${ganador.total}</strong> puntos!
+        ${esEquipo ? '<br><small>🎉 ¡Victoria en equipo! 🎉</small>' : ''}
+        <br><small>${modoJuegoPorMeta ? '🎯 Victoria por meta alcanzada' : '🔄 Victoria por mayor puntaje en ' + numeroRondasTotal + ' rondas'}</small>
+    </div>
       `;
 
       // Crear tabla de resumen por rondas
@@ -827,6 +1604,12 @@
       `;
 
       document.getElementById('resumenContenido').innerHTML = tablaHTML;
+      createConfettiBurst();
+      anunciarGanador(ganador.nombre);
+      const audio = document.getElementById('audioResumen');
+        audio.volume = 0.8; // puedes ajustar el volumen aquí
+        audio.currentTime = 0;
+        audio.play().catch(e => console.log('Error al reproducir audio:', e));
       document.getElementById('modalResumen').style.display = 'block';
     }
 
