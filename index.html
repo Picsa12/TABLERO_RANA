@@ -1241,11 +1241,17 @@ turno = 0;
 turnoEquipo = 0;
 turnoJugadorEnEquipo = 0;
 
-    cerrarModal('modalJugadores');
-    document.getElementById('inicio').style.display = 'none';
-    document.getElementById('tablaContainer').style.display = 'block';
-    actualizarTabla();
-    actualizarTurnoInfo();
+cerrarModal('modalJugadores');
+document.getElementById('inicio').style.display = 'none';
+document.getElementById('tablaContainer').style.display = 'block';
+actualizarTabla();
+actualizarTurnoInfo();
+
+// Anunciar el primer turno
+setTimeout(() => {
+    const primerJugador = obtenerJugadorActual();
+    anunciarTurno(primerJugador.nombre);
+}, 1000);
 }
 
 function obtenerJugadorActual() {
@@ -1353,6 +1359,7 @@ if (modoEquipos) {
 
       // Si estamos en modo equipos, actualizar también los totales del equipo
 // Avanzar turno
+// Avanzar turno
 if (modoEquipos) {
     turnoActualIndex++;
     if (turnoActualIndex >= turnosAlternados.length) {
@@ -1368,13 +1375,22 @@ if (modoEquipos) {
 }
 
 // Verificar si hay ganador
-verificarGanador();
+const hayGanador = verificarGanador();
+
+// Solo anunciar siguiente turno si el juego continúa
+if (!hayGanador) {
+    const siguienteJugador = obtenerJugadorActual();
+    
+    // Pequeño retraso para que se cierre el modal primero
+    setTimeout(() => {
+        anunciarTurno(siguienteJugador.nombre);
+    }, 500);
+}
       
-      actualizarTabla();
+actualizarTabla();
 actualizarTurnoInfo();
 cerrarModal('modalTurno');
     }
-
 function verificarGanador() {
     let hayGanador = false;
     let ganador = null;
@@ -1409,9 +1425,11 @@ function verificarGanador() {
         }
     }
     
-    if (hayGanador && ganador) {
-        mostrarResumenFinal(ganador, esEquipo);
-    }
+if (hayGanador && ganador) {
+    mostrarResumenFinal(ganador, esEquipo);
+    return true; // LÍNEA AGREGADA
+}
+return false; // LÍNEA AGREGADA
 }
     
 function actualizarTabla() {
@@ -1510,6 +1528,37 @@ function actualizarTurnoInfo() {
         speechSynthesis.cancel();      // Por si hay otra voz hablándose
         speechSynthesis.speak(utterance);
       }
+    
+function anunciarTurno(nombreJugador) {
+    const frases = [
+        `¡Atención! Es el turno de ${nombreJugador}! ¡Dale con todo!`,
+        `¡Ahora le toca a ${nombreJugador}! ¡A demostrar tu puntería!`,
+        `¡Es el momento de ${nombreJugador}! ¡Que vuelen las fichas!`,
+        `¡${nombreJugador}, es tu turno! ¡A por la victoria!`,
+        `¡Llegó el turno de ${nombreJugador}! ¡Apunta y dispara!`,
+        `¡${nombreJugador}, demuestra tu habilidad! ¡Es tu momento!`,
+        `¡Atención todos! ¡${nombreJugador} está listo para jugar!`
+    ];
+    
+    let mensaje = frases[Math.floor(Math.random() * frases.length)];
+    
+    // Si está en modo equipos, agregar el nombre del equipo con más energía
+    if (modoEquipos) {
+        const jugadorActual = obtenerJugadorActual();
+        if (jugadorActual.equipo !== undefined) {
+            mensaje = `¡Es el turno de ${nombreJugador} del ${equipos[jugadorActual.equipo].nombre}! ¡TIRAA!`;
+        }
+    }
+
+    const utterance = new SpeechSynthesisUtterance(mensaje);
+    utterance.lang = 'es-ES';
+    utterance.rate = 1.2;            // Más rápido para más energía
+    utterance.pitch = 2;           // Tono más alto y enérgico
+    utterance.volume = 1.1;          // Volumen máximo
+
+    speechSynthesis.cancel();
+    speechSynthesis.speak(utterance);
+}
 
 function mostrarResumenFinal(ganador, esEquipo = false) {
     juegoEnCurso = false;
